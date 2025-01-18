@@ -1,0 +1,17 @@
+.totalContainer{
+    border-radius: 20px;
+
+}
+.iconContainer{
+    background-color: #10898F;
+    border-radius: 25px;
+}
+.progressBar {
+    font-size: 0.9rem;
+    height: 17px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 8px;
+  }

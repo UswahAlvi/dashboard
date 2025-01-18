@@ -1,0 +1,44 @@
+
+.chartContainer {
+  border: 1px solid #D8D8D8;
+  border-radius: 1px;
+  max-width: 420px;
+  min-width:400px;
+} 
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+  padding:20px 14px;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.dropdown {
+  font-size: 1.0rem;
+  font-weight: 600;
+}
+
+.tooltip {
+  background-color: #4CAF50;
+  color: #FFF;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.tooltipItem {
+  margin: 0;
+}
+
+.legend {
+  top: 10px;
+  right: 30px;
+  font-size: 12px;
+  color: #666;
+}

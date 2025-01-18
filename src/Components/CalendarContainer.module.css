@@ -1,0 +1,25 @@
+
+.date {
+  background-color: #f5f5f7;
+  padding-inline: 0.7rem;
+  padding-block:0.5rem;
+  border-radius: 25px
+}
+
+.selectedDateHighlight {
+  background-color: #10898f;
+  color: white;
+}
+
+.selectedBorder{
+  border: 1px solid  #10898f;
+  padding: 0.2rem;
+  border-radius: 25px;
+
+}
+.otherBorder{
+  
+  border: 1px solid  white;
+  padding: 0.2rem;
+  border-radius: 25px;
+}

@@ -1,0 +1,10 @@
+
+.navLink {
+    
+    border-radius: 0px 5px 5px 0px;
+  }
+  
+  .navLink.active {
+    background-color: #C72C8814; 
+  }
+  
