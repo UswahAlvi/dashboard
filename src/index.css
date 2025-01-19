@@ -2,10 +2,11 @@
 body {
     font-family: 'Roboto', sans-serif;
 }
+.txt-clr{
+    color:var(--primary-color1)
+}
 :root {
+    --primary-color1: #10898F;
+    --primary-color2: #C72C88;
     font-size: 12px; 
 }
-.txt-clr{
-    color:#10898F
-}
- 

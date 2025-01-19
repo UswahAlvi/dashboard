@@ -16,6 +16,7 @@ function App() {
     <BrowserRouter>
     <SideBar />  
       <Routes> 
+        <Route path="/" element={<Dashboard />} /> 
         <Route path="/Dashboard" index element={<Dashboard />} />
         <Route path="/Calendar" element={<CalendarPage />} />
         <Route path="/Projects" element={<ProjectsPage />} />

@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import { Modal } from 'react-bootstrap';
 import { MdOutlineEdit } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import { addField } from '../Slices/FieldSlice';
+import { useSelector } from 'react-redux';
 
 const AddFieldsContainer = styled.div`
   display: grid;
@@ -9,7 +12,9 @@ const AddFieldsContainer = styled.div`
   margin-top: 2rem;
 `;
 
-const FieldButton = styled.button`
+const FieldButton = styled.button.attrs(() => ({
+  type: 'button',
+}))`
   padding: 1rem;
   border: none;
   border-radius: 4px;
@@ -18,7 +23,6 @@ const FieldButton = styled.button`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: ${(props) => props.bgColor || '#10898F'};
   color: white;
 `;
 
@@ -36,28 +40,9 @@ const StyledModal = styled(Modal)`
   }
 `;
 
-const AddFieldsModal = ({ show, onClose, addField }) => {
-  
-  const fields = [
-    { name: 'Text Box', type: 'Text Box' },
-    { name: 'Text Area', type: 'Text Area' },
-    { name: 'Description Box', type: 'Description Box' },
-    { name: 'Menu Bar', type: 'Menu Bar' },
-    { name: 'Radio Button', type: 'Radio Button' },
-    { name: 'Checklist', type: 'Checklist' },
-    { name: 'Full Name', type: 'Full Name' },
-    { name: 'Email', type: 'Email' },
-    { name: 'Phone', type: 'Phone' },
-    { name: 'Address', type: 'Address' },
-    { name: 'Time', type: 'Time' },
-    { name: 'Date', type: 'Date' },
-    { name: 'Files', type: 'File' },
-    { name: 'Image', type: 'Image' },
-    { name: 'Link Resource', type: 'Link Resource' },
-    { name: 'Social Links', type: 'Social Links' },
-    { name: 'Range', type: 'Range' },
-  ];
-
+const AddFieldsModal = ({ show, onClose, addMenu }) => {
+  const fields=useSelector(state=>state.field.fieldsToBeAdded)
+  const dispatch=useDispatch();
   return (
     <StyledModal show={show} onHide={onClose} centered>
       <Modal.Header closeButton>
@@ -68,9 +53,15 @@ const AddFieldsModal = ({ show, onClose, addField }) => {
           {fields.map((field, index) => (
             <FieldButton
               key={field.name}
-              bgColor={index % 2 === 0 ? '#10898F' : '#c72c88'} 
+              style={{
+                backgroundColor: index % 2 === 0 ? '#10898F' : '#c72c88', 
+              }}
               onClick={() => {
-                addField(field.name, field.type);
+                if (field.type === 'Menu Bar') {
+                  addMenu(field); 
+                } else {
+                  dispatch(addField(field));
+                }
                 onClose();
               }}
             >

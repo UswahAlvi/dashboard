@@ -1,16 +1,21 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Modal } from 'react-bootstrap';
-import { AiOutlinePlus, AiOutlinePaperClip } from 'react-icons/ai';
+import { AiOutlinePlus, AiOutlineMenu } from 'react-icons/ai';
 import { FaSave, FaTimes } from 'react-icons/fa';
 import { FaRegUserCircle } from "react-icons/fa";
 import AddFieldsModal from './AddFieldsModal';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { backToInitial, setFields } from '../Slices/FieldSlice';
+import { DndContext, closestCorners } from '@dnd-kit/core';
+import { arrayMove, SortableContext, verticalListSortingStrategy, rectSortingStrategy } from '@dnd-kit/sortable';
+import RenderInput from './renderInput';
 
 const ModalContainer = styled.div`
   padding: 2rem;
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 `;
 
 const FieldList = styled.div`
@@ -28,23 +33,6 @@ const FieldItem = styled.div`
   border-radius: 4px;
 `;
 
-const FieldLabel = styled.label`
-  font-size: 0.9rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-`;
-
-const FieldInput = styled.input`
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-const SelectInput = styled.select`
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
 
 const AddFieldsButton = styled.button`
   margin-top: 1.5rem;
@@ -67,190 +55,81 @@ const FooterButton = styled.button`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: ${(props) => (props.primary ? '#10898F' : 'white')};
-  color: ${(props) => (props.primary ? 'white' : '#10898F')};
   padding: 0.7rem 1.5rem;
-  border: ${(props) => (props.primary ? 'none' : '1px solid #10898F')};
   border-radius: 4px;
   cursor: pointer;
-
-  &:hover {
-    background-color: ${(props) => (props.primary ? '#0e6b70' : '#f8f9fa')};
-  }
 `;
 
 const StyledIcon = styled(FaRegUserCircle)`
-  font-size: 2rem; /* Adjust icon size */
-  margin-right: 1rem; /* Add space between icon and title */
+  font-size: 2rem; 
+  margin-right: 1rem; 
+  color: #10898F;
+`;
+
+const MenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f1f1;
+  padding: 0.4rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+`;
+
+const MenuItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ddd;
+  }
+`;
+
+const MenuIcon = styled(AiOutlineMenu)`
+  font-size: 1.5rem;
+  margin-right: 1rem;
   color: #10898F;
 `;
 
 export default function ClientModal({ onClose }) {
-  const [fields, setFields] = useState([
-    { name: 'Name', value: '', type: 'Text Box' },
-    { name: 'Email', value: '', type: 'Email' },
-    { name: 'Company Name', value: '', type: 'Text Box' },
-    { name: 'Industry', value: '', type: 'Dropdown', options: ['Finance', 'Healthcare', 'Technology'] },
-    { name: 'Attach Files', value: '', type: 'File' },
-    { name: 'Status', value: '', type: 'Dropdown', options: ['Active', 'Inactive', 'Pending'] },
-    { name: 'Label', value: '', type: 'Dropdown', options: ['High Priority', 'Low Priority'] },
-    { name: 'Contact', value: '', type: 'Text Box' },
-    { name: 'Size', value: '', type: 'Dropdown', options: ['Small', 'Medium', 'Large'] },
-  ]);
-
   const [isAddFieldsModalOpen, setAddFieldsModalOpen] = useState(false);
+  const [isMenuAdded, setIsMenuAdded] = useState(false);
+  const [saveClicked, setSaveClicked] = useState(false);
+  const dispatch=useDispatch();
+  const fields = useSelector((state) => state.field.fields || []);
+  const isValid = useSelector((state) => state.field.isValid);
 
-  const handleAddField = (fieldName, fieldType, options = []) => {
-    setFields([...fields, { name: fieldName, value: '', type: fieldType, options }]);
-  };
+  function addMenu() {
+    setIsMenuAdded(true);
+  }
 
-  const handleInputChange = (index, newValue) => {
-    const updatedFields = [...fields];
-    updatedFields[index].value = newValue;
-    setFields(updatedFields);
-  };
-
-  const renderInput = (field, index) => {
-    switch (field.type) {
-      case 'Text Box':
-      case 'Full Name':
-      case 'Email':
-      case 'Phone':
-      case 'Address':
-      case 'Link Resource':
-      case 'Social Links':
-        return (
-          <FieldInput
-            type="text"
-            value={field.value}
-            onChange={(e) => handleInputChange(index, e.target.value)}
-            placeholder={`Enter ${field.name}`}
-          />
-        );
-      case 'Text Area':
-      case 'Description Box':
-        return (
-          <textarea
-            value={field.value}
-            onChange={(e) => handleInputChange(index, e.target.value)}
-            placeholder={`Enter ${field.name}`}
-            rows={4}
-          />
-        );
-      case 'Time':
-        return (
-          <FieldInput
-            type="time"
-            value={field.value}
-            onChange={(e) => handleInputChange(index, e.target.value)}
-          />
-        );
-      case 'Date':
-        return (
-          <FieldInput
-            type="date"
-            value={field.value}
-            onChange={(e) => handleInputChange(index, e.target.value)}
-          />
-        );
-      case 'File':
-      case 'Files':
-      case 'Image':
-        return (
-          <FieldInput
-            type="file"
-            onChange={(e) => handleInputChange(index, e.target.files[0])}
-          />
-        );
-      case 'Dropdown':
-        return (
-          <SelectInput
-            value={field.value}
-            onChange={(e) => handleInputChange(index, e.target.value)}
-          >
-            <option value="">Select {field.name}</option>
-            {field.options.map((option) => (
-              <option key={option} value={option}>{option}</option>
-            ))}
-          </SelectInput>
-        );
-      case 'Radio Button':
-        return (
-          <div>
-            {field.options.map((option) => (
-              <label key={option}>
-                <input
-                  type="radio"
-                  name={`radio-${index}`}
-                  value={option}
-                  checked={field.value === option}
-                  onChange={(e) => handleInputChange(index, e.target.value)}
-                />
-                {option}
-              </label>
-            ))}
-          </div>
-        );
-      case 'Checklist':
-        return (
-          <div>
-            {field.options.map((option, optIndex) => (
-              <label key={optIndex}>
-                <input
-                  type="checkbox"
-                  value={option}
-                  checked={field.value?.includes(option)}
-                  onChange={(e) => {
-                    const newValue = [...(field.value || [])];
-                    if (e.target.checked) {
-                      newValue.push(option);
-                    } else {
-                      newValue.splice(newValue.indexOf(option), 1);
-                    }
-                    handleInputChange(index, newValue);
-                  }}
-                />
-                {option}
-              </label>
-            ))}
-          </div>
-        );
-      case 'Range':
-        return (
-          <FieldInput
-            type="range"
-            value={field.value}
-            min={field.min || 0}
-            max={field.max || 100}
-            step={field.step || 1}
-            onChange={(e) => handleInputChange(index, e.target.value)}
-          />
-        );
-      case 'Menu Bar':
-        return (
-          <nav>
-            {field.options.map((option, optIndex) => (
-              <button
-                key={optIndex}
-                onClick={() => handleInputChange(index, option)}
-              >
-                {option}
-              </button>
-            ))}
-          </nav>
-        );
-      default:
-        return (
-          <FieldInput
-            type="text"
-            value={field.value}
-            onChange={(e) => handleInputChange(index, e.target.value)}
-            placeholder={`Enter ${field.name}`}
-          />
-        );
+  function handleSave() {
+    setSaveClicked(true);
+    if (isValid) {
+      console.log('Save client!', fields.map((field) => {
+        return { name: field.name, value: field.value };
+      }));
+      dispatch(backToInitial());
+      onClose();
     }
-  };
-  
+  }
+
+  const getFieldPos=id=>fields.findIndex(fields=>fields.id===id);
+
+  const handleDragEnd= event =>{
+      const {active,over}=event;
+      if(active.id===over.id) return;
+
+      const originalPos=getFieldPos(active.id);
+      const newPos=getFieldPos(over.id);
+
+      const movedFields=arrayMove(fields,originalPos, newPos);
+
+      dispatch(setFields(movedFields));
+
+  }
 
   return (
     <Modal show onHide={onClose} size="lg" centered>
@@ -260,29 +139,45 @@ export default function ClientModal({ onClose }) {
       </Modal.Header>
       <Modal.Body>
         <ModalContainer>
+          {isMenuAdded && (
+            <MenuContainer>
+              <MenuItem>
+                <MenuIcon />
+              </MenuItem>
+            </MenuContainer>
+          )}
+          <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCorners} >
+            <SortableContext items={fields} strategy={rectSortingStrategy}>
           <FieldList>
-            {fields.map((field, index) => (
-              <FieldItem key={field.name}>
-                <FieldLabel>{field.name}</FieldLabel>
-                {renderInput(field, index)}
-              </FieldItem>
+            {fields.map((field) => (
+                <RenderInput field={field} key={field.id} saveClicked={saveClicked} />
             ))}
           </FieldList>
+          </SortableContext>
+          </DndContext>
           <AddFieldsButton onClick={() => setAddFieldsModalOpen(true)}>
             <AiOutlinePlus /> Add Fields
           </AddFieldsButton>
           <AddFieldsModal
             show={isAddFieldsModalOpen}
             onClose={() => setAddFieldsModalOpen(false)}
-            addField={handleAddField}
+            addMenu={addMenu}
           />
         </ModalContainer>
       </Modal.Body>
-      <Modal.Footer>
-        <FooterButton onClick={onClose}>
+
+      <Modal.Footer><FooterButton onClick={() => {  dispatch(backToInitial()); onClose(); }}>
           <FaTimes /> Close
         </FooterButton>
-        <FooterButton onClick={() => { console.log('Save client!', fields); onClose(); }} primary>
+        <FooterButton
+          style={{
+            backgroundColor: '#10898F',
+            color:'white',
+            border:'none',
+            cursor:'pointer',
+          }}
+          onClick={handleSave}
+        >
           <FaSave /> Save
         </FooterButton>
       </Modal.Footer>

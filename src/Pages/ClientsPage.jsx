@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { CiSquarePlus } from 'react-icons/ci';
 import ClientModal from '../Components/ClientModal';
+import { useDispatch } from 'react-redux';
+import { backToInitial } from '../Slices/FieldSlice';
 
 const MainPageContainer = styled.div`
   background-color: rgb(248, 249, 250); /* Light gray background */
@@ -48,13 +50,14 @@ const AddButton = styled.button`
 
 export default function ClientsPage() {
   const [isModalOpen, setModalOpen] = useState(false);
-
+  const dispatch=useDispatch();
   const handleAddClientClick = () => {
     setModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
+    dispatch(backToInitial());
   };
 
   return (
