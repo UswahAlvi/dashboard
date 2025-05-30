@@ -5,7 +5,7 @@ export default function ActiveNowSingle({ image, time, isOnline }) {
     <div className={styles.container}>
       <div className={styles.profile}>
         <img
-          src={`/icons/${image}.png`}
+          src={`${image}.png`}
           alt="Profile"
           className={styles.profileImage}
         />

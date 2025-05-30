@@ -5,7 +5,7 @@ export default function TotalContainer({ name, number, progress, color }) {
     <div className={`${styles.totalContainer} bg-white px-5 py-4`} style={{ width: 'fit-content' }}>
       <div className="d-flex flex-row mb-3">
         <div className={`${styles.iconContainer} p-2 d-flex justify-content-center align-items-center`}>
-          <img src="/icons/edit.png" style={{ height: '15px', width: '15px' }} />
+          <img src="edit.png" style={{ height: '15px', width: '15px' }} />
         </div>
         <span className="ms-4" style={{ color: '#697077' }}>
           {name}

@@ -7,11 +7,11 @@ export default function TodayTaskContainer() {
     <div className={styles.taskContainer}>
       <div className={styles.header}>
         <span>Task Today</span>
-        <img src="/icons/three-dots.png" alt="Menu" />
+        <img src="three-dots.png" alt="Menu" />
       </div>
 
       <img
-        src="/images/task-today-image.png"
+        src="task-today-image.png"
         alt="Task Today"
         className={styles.taskImage}
       />
@@ -37,13 +37,13 @@ export default function TodayTaskContainer() {
       <div className={styles.infoContainer}>
         <div className={styles.timeInfo}>
           <img
-            src="/icons/time-circle.png"
+            src="time-circle.png"
             alt="Time"
             className={styles.timeIcon}
           />
           <span>1 Hour</span>
         </div>
-        <img src='/icons/students.png' />
+        <img src='students.png' />
       </div>
 
       <div className={styles.divider}></div>

@@ -67,7 +67,7 @@ const CalendarContainer = () => {
           onClick={() => handleWeekChange(-1)} // Move to the previous week
           style={{ background: "none", border: "none", cursor: "pointer" }}
         >
-          <img src="/icons/arrow-left.png" alt="Previous" />
+          <img src="arrow-left.png" alt="Previous" />
         </button>
         <span
           onClick={() => setIsCalendarOpen(true)}
@@ -79,7 +79,7 @@ const CalendarContainer = () => {
           onClick={() => handleWeekChange(1)} // Move to the next week
           style={{ background: "none", border: "none", cursor: "pointer" }}
         >
-          <img src="/icons/arrow-right.png" alt="Next" />
+          <img src="arrow-right.png" alt="Next" />
         </button>
       </div>
 

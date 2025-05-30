@@ -6,7 +6,7 @@ export default function ActiveNowContainer() {
         <span style={{fontWeight:'600',fontSize:'1.3rem' }}>Active Now</span>
         <div className="d-flex flex-row align-items-center gap-2">
             <span className="text-decoration-underline">View All</span>
-            <img src='/icons/view-all-arrow.png' height={'9px'} width={'12px'}/>
+            <img src='view-all-arrow.png' height={'9px'} width={'12px'}/>
         </div>
     </div>
     <div className="d-flex flex-column gap-3 position-relative">

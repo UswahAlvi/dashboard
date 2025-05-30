@@ -17,7 +17,7 @@ export default function PageNameContainer({ src, name }) {
     >
       {isActive && (
         <img
-          src="/icons/pink-rectangle.png"
+          src="pink-rectangle.png"
           style={{
             maxHeight: "30px",
             position: "absolute",

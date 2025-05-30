@@ -73,7 +73,7 @@ const ChartContainer = () => {
           This Week
           <img
             className="mx-2"
-            src="/icons/arrow-down.png"
+            src="arrow-down.png"
             height={'13px'}
             width={'13px'}
           />

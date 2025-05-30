@@ -6,7 +6,7 @@ export default function SearchInput() {
         <div className="d-flex align-items-center px-2" style={styles}>
 
             <img
-                src="/icons/search.png"
+                src="search.png"
                 alt="Search Icon"
                 className="ms-3"
                 style={{
