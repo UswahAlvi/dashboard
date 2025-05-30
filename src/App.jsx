@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { HashRouter, Route, Routes } from "react-router-dom"
 import SideBar from "./Pages/SideBar"
 import Dashboard from "./Pages/Dashboard"
 import CalendarPage from "./Pages/CalendarPage"
@@ -13,7 +13,7 @@ function App() {
   return (
     <>
     <div className="d-flex">
-    <BrowserRouter>
+    <HashRouter>
     <SideBar />  
       <Routes> 
         <Route path="/" element={<Dashboard />} /> 
@@ -26,7 +26,7 @@ function App() {
         <Route path="/clients" element={<ClientsPage />} />
 
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
     </div>
     </>
   )
