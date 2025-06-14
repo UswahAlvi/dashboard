@@ -7,11 +7,12 @@ import ProposalsPage from "./Pages/ProposalsPage"
 import TeamPage from "./Pages/TeamPage"
 import ReportPage from "./Pages/ReportPage"
 import ClientsPage from "./Pages/ClientsPage"
-
+import DemoSticker from "./Pages/DemoSticker"
 function App() {
 
   return (
     <>
+     <DemoSticker />
     <div className="d-flex">
     <HashRouter>
     <SideBar />  
